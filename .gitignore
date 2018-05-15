@@ -1,0 +1,11 @@
+# latex
+*.aux
+*.log
+*.out
+
+# iupyter
+*.ipynb_checkpoints/
+
+# calender
+*.ics
+
