@@ -16,19 +16,8 @@ x = tf.placeholder(tf.float32, [None, 784])
 # b = tf.get_variable('b', shape=(10), initializer=tf.zeros_initializer)
 # y = tf.matmul(x, W) + b
 
-# b
-# idx = 250
-# a. f(x*w1+b1)*w2+b2
-# w1 = tf.Variable(tf.truncated_normal(shape=[784,idx]))
-# b1 = tf.get_variable('b1', shape=(idx), initializer=tf.zeros_initializer)
-# w2 = tf.Variable(tf.truncated_normal(shape=[idx,10]))
-# # w2 = tf.get_variable('w2', shape=(idx,10), initializer=tf.truncated_normal_initializer)
-# b2 = tf.get_variable('b2', shape=(10), initializer=tf.zeros_initializer)
-# f = tf.nn.relu(tf.matmul(x, w1) + b1)
-# y = (tf.matmul(f, w2) + b2)
-
 # c. f2(f1(x*w1+b1)*w2+b2)*w3+b3
-idx = [20, 20]
+idx = [20, 20] # [10, 10], [50,50], [100,100]
 w1 = tf.Variable(tf.truncated_normal(shape=[784,idx[0]]))
 b1 = tf.get_variable('b1', shape=(idx[0]), initializer=tf.zeros_initializer)
 w2 = tf.Variable(tf.truncated_normal(shape=[idx[0],idx[1]]))
@@ -40,6 +29,7 @@ f1 = tf.nn.relu(tf.matmul(x, w1) + b1)
 f2 = tf.nn.relu(tf.matmul(f1, w2) + b2)
 y = tf.nn.relu(tf.matmul(f2, w3) + b3)
 # y = (tf.matmul(f2, w3) + b3)
+
 
 # Define loss and optimizer
 y_ = tf.placeholder(tf.float32, [None, 10])
@@ -58,7 +48,7 @@ sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
 # Train
-for s in range(20000):
+for s in range(20000): # 10000, 20000, 25000, 30000, 35000, 50000
   batch_xs, batch_ys = mnist.train.next_batch(100)
   sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
   if s % 100 == 0:
@@ -69,4 +59,3 @@ for s in range(20000):
 # Test trained model
 print('accuracy: {}'.format(sess.run(accuracy, feed_dict={x: mnist.test.images,
                                     y_: mnist.test.labels})))
-
